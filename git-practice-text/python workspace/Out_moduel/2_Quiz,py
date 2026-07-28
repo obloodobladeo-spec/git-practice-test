@@ -1,0 +1,23 @@
+from urllib import request
+from bs4 import BeautifulSoup
+import csv # 파이썬으로 CSV 다루기 전용 모듈
+
+names = ["삼성전자", "SK하이닉스", "삼성바이오로직스"]
+codes = ["005930", "000660", "207940"]
+
+stocks = list(zip(names, codes))
+
+url = "https://finance.naver.com/item/sise.naver?code={}"
+
+with open("stock-prices.csv", "w", encoding="utf-8", newline="") as file:
+    writer = csv.writer(file)
+    writer.writerow(["종목명", "주식가격"]) # 각 항목의 제목을 써준 것
+
+    for stock in stocks:
+        stock_url = url.format(stock[1])
+        response = request.urlopen(stock_url)
+        html = response.read()
+        soup = BeautifulSoup(html, "html.parser")
+        data = soup.select_one("#_nowVal")
+        price = data.text.replace(",", "")
+        writer.writerow([stock[0], price])
