@@ -118,10 +118,3 @@ class MainWindow(QMainWindow):
     #         self.load_members()
     #     else:
     #         QMessageBox.critical(self, "에러", "제거 중 오류가 발생했습니다.")
-
-app = QApplication(sys.argv)
-
-mwindow = MainWindow()
-mwindow.show()
-
-sys.exit(app.exec_())
